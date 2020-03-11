@@ -1,6 +1,22 @@
 const express = require('express');
 const fallback = require('express-history-api-fallback');
 
+// import React from "react";
+// import ReactDOM from "react-dom";
+// // import "./index.css";
+// // import App from "./App";
+
+// export default function App() {
+//     return (
+//         <div>
+//             App
+//         </div>
+//     )
+// }
+
+
+// ReactDOM.render(<App/>, document.getElementById("root"));
+
 const config = require('./src/config.js');
 const logger = require('./src/logger.js');
 

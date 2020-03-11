@@ -25,6 +25,8 @@
     "nicnacno": "^2.0.2",
     "nocache": "^2.0.0",
     "node-fetch": "^1.7.3",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
     "tictactoe-agent": "^2.1.2"
   }
 }
