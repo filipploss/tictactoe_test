@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    border: 1px solid black;
+    justify-content: center;
+}
+
+.column {
+    border: 1px solid black;
+    min-height: 100px;
+    min-width: 100px;
+}

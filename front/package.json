@@ -9,6 +9,7 @@
     "muicss": "^0.10.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-jss": "^10.0.4",
     "react-scripts": "3.4.0"
   },
   "scripts": {

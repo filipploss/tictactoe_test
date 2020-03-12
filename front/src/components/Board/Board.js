@@ -1,30 +1,34 @@
-import React, { Component } from 'react'
-import Container from 'muicss/lib/react/container';
-import Row from 'muicss/lib/react/row';
-import Col from 'muicss/lib/react/col';
+import React, { Component } from "react";
+import Container from "muicss/lib/react/container";
+import Row from "muicss/lib/react/row";
+import Col from "muicss/lib/react/col";
 
+import "./Board.css";
+import Results from "../Results/Results";
 
 export default class Board extends Component {
-    render() {
-        return (
-            <Container >
+  render() {
+    return (
+      <Container className="container ">
+          <div >
         <Row>
-          <Col xs="1" >xs-2 md-4</Col>
-          <Col xs="1" >xs-2 md-4</Col>
-          <Col xs="1">xs-2 md-4</Col>
-          {/* <Col xs="6" md="4">xs-6 md-4</Col> */}
+          <Col className="column" xs="1"></Col>
+          <Col className="column" xs="1"></Col>
+          <Col className="column" xs="1"></Col>
         </Row>
         <Row>
-         <Col xs="2" md="4">xs-2 md-4</Col>
-          <Col xs="2" md="4">xs-2 md-4</Col>
-          <Col xs="2" md="4">xs-2 md-4</Col>
+          <Col className="column" xs="1"></Col>
+          <Col className="column" xs="1"></Col>
+          <Col className="column" xs="1"></Col>
         </Row>
         <Row>
-        <Col xs="2" md="4">xs-2 md-4</Col>
-          <Col xs="2" md="4">xs-2 md-4</Col>
-          <Col xs="2" md="4">xs-2 md-4</Col>
+          <Col className="column" xs="1"></Col>
+          <Col className="column" xs="1"></Col>
+          <Col className="column" xs="1"></Col>
         </Row>
+        <Results/>
+        </div>
       </Container>
-        )
-    }
+    );
+  }
 }
