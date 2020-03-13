@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class Results extends Component {
+export default class Score extends Component {
   state = {
     aiWins: "-",
     playerWins: "-",
@@ -29,7 +29,7 @@ export default class Results extends Component {
 
     return (
       <div>
-        <div>Results:</div>
+        <div>Score:</div>
         <div>AI wins: {this.state.aiWins}</div>
         <div>Player wins: {this.state.playerWins}</div>
         <div>X wins: {this.state.xWins}</div>

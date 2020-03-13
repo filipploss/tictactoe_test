@@ -1,27 +1,18 @@
 const express = require('express');
 const fallback = require('express-history-api-fallback');
-
-// import React from "react";
-// import ReactDOM from "react-dom";
-// // import "./index.css";
-// // import App from "./App";
-
-// export default function App() {
-//     return (
-//         <div>
-//             App
-//         </div>
-//     )
-// }
-
-
-// ReactDOM.render(<App/>, document.getElementById("root"));
-
 const config = require('./src/config.js');
 const logger = require('./src/logger.js');
+let cors = require('cors')
 
 const app = express();
+app.use(cors())
 app.enable('trust proxy');
+// app.use(function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Methods", "HEAD, GET, POST, PUT, PATCH, DELETE");
+//   res.header("Access-Control-Allow-Origin", "*");
+//   next();
+// });
 app.use(logger.log4js.connectLogger(logger.getLogger('express'), {level: 'auto'}));
 const root = __dirname + config.app.front_path;
 app.use(express.static(root));
@@ -36,7 +27,7 @@ Promise.resolve()
   .then(() => {
     app.use('/api', require('./api/index.js'));
     logger.info('REST API attached to `/api` route');
-    app.use(fallback('index.html', { root }));
+    app.use(fallback('/public/index.html', { root }));
   })
   .catch(err => {
     logger.fatal(err.message);
