@@ -7,12 +7,6 @@ let cors = require('cors')
 const app = express();
 app.use(cors())
 app.enable('trust proxy');
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Methods", "HEAD, GET, POST, PUT, PATCH, DELETE");
-//   res.header("Access-Control-Allow-Origin", "*");
-//   next();
-// });
 app.use(logger.log4js.connectLogger(logger.getLogger('express'), {level: 'auto'}));
 const root = __dirname + config.app.front_path;
 app.use(express.static(root));
