@@ -10,10 +10,8 @@
 .container {
     display: flex;
     flex-wrap: wrap;
-    /* flex-grow: 0; */
     max-width: 306px;
     border: 1px solid black;
-    /* justify-content: center; */
 }
 
 .column {

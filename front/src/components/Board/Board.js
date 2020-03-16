@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-import Container from "muicss/lib/react/container";
-import Row from "muicss/lib/react/row";
-import Col from "muicss/lib/react/col";
 
 import "./Board.css";
 import Score from "../Score/Score";
@@ -12,83 +9,27 @@ export default class Board extends Component {
     playerCommand: "",
     aiCommand: "",
     board: [],
-    matchEnd: null,
+    matchEnd: '',
     winner: "",
     team: ""
   };
-  // componentDidMount() {
-  //   const fetchMove = async url => {
-  //     const response = await fetch(url);
-  //     const myJson = await response.json();
-  //     console.log("Match Started", JSON.stringify(myJson));
-  //     let playerCommand = await myJson.result.player;
-  //     let aiCommand = await myJson.result.ai;
-  //     let board = await myJson.result.board;
-  //     //  const match = await function() {
-  //        let matchEnd = await myJson.result.end
-  //       console.log('matchEnd= ', matchEnd)
-
-  //     // if (myJson.result.end) {
-  //     //   matchEnd = await myJson.result.end
-  //     //   console.log('matchEnd= ', matchEnd)ç
-  //     // }
-  //     let winner = await myJson.result.winner;
-  //     let team = await myJson.result.team;
-  //     // console.log(playerCommand)
-  //     this.setState({ playerCommand, aiCommand, board});
-  //     // console.log(this.state)
-  //   };
-  //   fetchMove("http://localhost:3001/api/game");
-  // }
+  
 
   componentDidMount() {
     const fetchMove = async url => {
       const response = await fetch(url);
       const myJson = await response.json();
       console.log("Match Started", JSON.stringify(myJson));
-      let playerCommand = await myJson.result.player;
-      let aiCommand = await myJson.result.ai;
-      let board = await myJson.result.board;
-      //  const match = await function() {
-      // let matchEnd = await myJson.result.end;
-      //   console.log('matchEnd= ', matchEnd)
-
-      // if (myJson.result.end) {
-      //   matchEnd = await myJson.result.end
-      //   console.log('matchEnd= ', matchEnd)ç
-      // }
-
-      // console.log(playerCommand)
-      this.setState({ playerCommand, aiCommand, board });
-      // console.log(this.state)
+      const playerCommand = await myJson.result.player;
+      const aiCommand = await myJson.result.ai;
+      const board = await myJson.result.board;
+      const matchEnd = await myJson.result.end
+      this.setState({ playerCommand, aiCommand, board, matchEnd });
+      console.log('COMPONENTDIDMOUNT STATE= ', this.state)
     };
     fetchMove("http://localhost:3001/api/game");
   }
 
-  // componentDidUpdate() {
-  //   const fetchMove = async url => {
-  //     const response = await fetch(url);
-  //     const myJson = await response.json();
-  //     console.log("Match Started", JSON.stringify(myJson));
-  //     // let playerCommand = await myJson.result.player;
-  //     // let aiCommand = await myJson.result.ai;
-  //     let board = await myJson.result.board;
-  //     //  const match = await function() {
-  //     let matchEnd = await myJson.result.end || null;
-  //       console.log('matchEnd= ', matchEnd)
-
-  //     // if (myJson.result.end) {
-  //     //   matchEnd = await myJson.result.end
-  //     //   console.log('matchEnd= ', matchEnd)ç
-  //     // }
-  //     let winner = await myJson.result.winner;
-  //     let team = await myJson.result.team;
-  //     // console.log(playerCommand)
-  //     this.setState({winner, team, matchEnd});
-  //     console.log(this.state)
-  //   };
-  //   fetchMove("http://localhost:3001/api/game");
-  // }
 
   matchRestart = () => {
     const fetchMove = async url => {
@@ -96,7 +37,7 @@ export default class Board extends Component {
         method: "POST"
       });
       const myJson = await response.json();
-      let board = await myJson.result.board;
+      const board = await myJson.result.board;
       console.log("Match Restart", JSON.stringify(myJson));
       this.setState({
         board, matchEnd: null, winner: null
@@ -149,9 +90,6 @@ export default class Board extends Component {
       console.log("matchEnd= ", matchEnd);
       this.setState({ board, matchEnd, winner, team });
       console.log("State after move", this.state);
-      // let matchEnd = await myJson.result.end;
-      // console.log('matchEnd= ', matchEnd)
-      // console.log(this.state);
     };
     fetchMove("http://localhost:3001/api/game/move");
   }
@@ -174,18 +112,11 @@ export default class Board extends Component {
                   }
                   onClick={() => {
                     if (typeof item === "number" && !this.state.matchEnd) {
+                      console.log(!this.state.matchEnd)
                       this.makeMove(index + 1);
                     }
-                    // console.log('clicked cell: ', )
                   }}
                 >
-                  {/* {console.log('i= ', i)}
-                  {console.log('index= ', index)} */}
-                  {/* {console.log(item)}
-                  {console.log(this.state)} */}
-                  {/* {item} */}
-                  {/* {console.log(index)}
-                  {console.log(indexx)} */}
                   {item === "X" ? "X" : item === "O" ? "O" : ""}
                 </div>
               );
@@ -200,73 +131,7 @@ export default class Board extends Component {
         <button onClick={this.matchNext}>Next Match</button>
         <button onClick={this.gameReset}>Reset All Games</button>
       </div>
-      // <Container className="container ">
-      //   <div>
-      //     <Row>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => {
-      //           this.makeMove(1);
-      //           this.setState({ cell1: "X" });
-      //         }}
-      //       >
-      //         {this.state.cell1 === "X" ? (
-      //           <p>X</p>
-      //         ) : this.state.cell1 === "0" ? (
-      //           <p>O</p>
-      //         ) : (
-      //           ""
-      //         )}
-
-      //       </Col>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(2)}
-      //       ></Col>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(3)}
-      //       ></Col>
-      //     </Row>
-      //     <Row>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(4)}
-      //       ></Col>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(5)}
-      //       ></Col>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(6)}
-      //       ></Col>
-      //     </Row>
-      //     <Row>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(7)}
-      //       ></Col>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(8)}
-      //       ></Col>
-      //       <Col
-      //         className="column"
-      //         xs="1"
-      //         onClick={() => this.makeMove(9)}
-      //       ></Col>
-      //     </Row>
-
-      // </Container>
+     
     );
   }
 }

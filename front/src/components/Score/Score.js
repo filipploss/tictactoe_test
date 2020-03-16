@@ -34,7 +34,7 @@ export default class Score extends Component {
         <div>Player wins: {this.state.playerWins}</div>
         <div>X wins: {this.state.xWins}</div>
         <div>O wins: {this.state.oWins}</div>
-        <div>Games List: {this.state.gamesList}</div>
+        {/* <div>Games List: {this.state.gamesList}</div> */}
       </div>
     );
   }
