@@ -8,8 +8,7 @@ const initialState = {
   aiWins: "",
   playerWins: "",
   xWins: "",
-  oWins: "",
-  gamesList: []
+  oWins: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,8 +18,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         board: action.payload.board,
         matchEnd: action.payload.end,
-        winner: action.payload.winner,
-        team: action.payload.team
+        winner: action.payload.winner
       };
 
     case "RENDER_STORE":

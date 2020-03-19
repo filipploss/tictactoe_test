@@ -8,6 +8,8 @@ import App from "./App";
 import reducer from "./reducer";
 
 const store = createStore(reducer);
+export const { dispatch } = store;
+console.log(dispatch)
 
 ReactDOM.render(
   <Provider store={store}>
