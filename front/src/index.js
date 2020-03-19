@@ -8,7 +8,6 @@ import App from "./App";
 import reducer from "./reducer";
 
 const store = createStore(reducer);
-// const { dispatch } = store;
 
 ReactDOM.render(
   <Provider store={store}>
@@ -16,3 +15,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
+export default store;

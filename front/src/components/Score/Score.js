@@ -1,41 +1,42 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class Score extends Component {
-  state = {
-    aiWins: "-",
-    playerWins: "-",
-    xWins: "-",
-    oWins: "-",
-    gamesList: "-"
+import store from "../../index";
+import { renderScoreStore } from "../../actions";
 
-  };
-
+export class Score extends Component {
   componentDidMount() {
-    const fetchMe = async url => {
+    const fetchMove = async url => {
       const response = await fetch(url);
       const myJson = await response.json();
-      console.log(JSON.stringify(myJson));
-      let aiWins = await JSON.stringify(myJson.result.ai);
-      let playerWins = await JSON.stringify(myJson.result.player);
-      let xWins = await JSON.stringify(myJson.result.X);
-      let oWins = await JSON.stringify(myJson.result.O);
-      let gamesList = await JSON.stringify(myJson.result.list);
-      this.setState({ aiWins, playerWins, xWins, oWins, gamesList });
+      const result = await myJson.result;
+      store.dispatch(renderScoreStore(result));
     };
-    fetchMe("http://localhost:3001/api/score");
+    fetchMove("http://localhost:3001/api/score");
   }
 
   render() {
-
     return (
       <div>
-        <div>Score:</div>
-        <div>AI wins: {this.state.aiWins}</div>
-        <div>Player wins: {this.state.playerWins}</div>
-        <div>X wins: {this.state.xWins}</div>
-        <div>O wins: {this.state.oWins}</div>
-        {/* <div>Games List: {this.state.gamesList}</div> */}
+        <div>
+          <b>Score</b>
+        </div>
+        <div>AI wins: {this.props.aiWins}</div>
+        <div>Player wins: {this.props.playerWins}</div>
+        <div>X wins: {this.props.xWins}</div>
+        <div>O wins: {this.props.oWins}</div>
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ aiWins, playerWins, xWins, oWins }) => {
+  return {
+    aiWins,
+    playerWins,
+    xWins,
+    oWins
+  };
+};
+
+export default connect(mapStateToProps)(Score);

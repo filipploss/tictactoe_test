@@ -1,22 +1,80 @@
+const initialState = {
+  playerCommand: "",
+  aiCommand: "",
+  board: [],
+  matchEnd: "",
+  winner: "",
+  team: "",
+  aiWins: "",
+  playerWins: "",
+  xWins: "",
+  oWins: "",
+  gamesList: []
+};
 
-
-const reducer = (state = 0, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "INC":
-      return state + 1;
+    case "MAKE_MOVE":
+      return {
+        ...state,
+        board: action.payload.board,
+        matchEnd: action.payload.end,
+        winner: action.payload.winner,
+        team: action.payload.team
+      };
 
+    case "RENDER_STORE":
+      return {
+        ...state,
+        playerCommand: action.payload.player,
+        aiCommand: action.payload.ai,
+        board: action.payload.board,
+        matchEnd: action.payload.end
+      };
+
+    case "RESTART_MATCH":
+      return {
+        ...state,
+        board: action.payload.board,
+        matchEnd: null,
+        winner: null
+      };
+
+    case "NEXT_MATCH_STORE":
+      return {
+        ...state,
+        playerCommand: action.payload.player,
+        aiCommand: action.payload.ai,
+        board: action.payload.board,
+        matchEnd: null,
+        winner: null
+      };
+
+    case "RESET_ALL_GAMES":
+      return {
+        ...state,
+        winner: null
+      };
+
+    case "RENDER_SCORE_STORE":
+      return {
+        ...state,
+        aiWins: action.payload.ai,
+        playerWins: action.payload.player,
+        xWins: action.payload.X,
+        oWins: action.payload.O,
+        gamesList: action.payload.list
+      };
+
+    case "RENDER_CURRENT_GAME_STORE":
+      return {
+        ...state,
+        aiCommand: action.payload.ai,
+        playerCommand: action.payload.player
+      };
     default:
       return state;
   }
 };
 
 export default reducer;
-
-
-
-// const {dispatch} = store;
-
-// это вешаем на онклик
-// store.dispatch(inc());
-// store.dispatch(dec());
-// store.dispatch(rnd(payload));

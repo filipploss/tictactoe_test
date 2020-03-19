@@ -1,40 +1,41 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class CurrentGame extends Component {
-    state = {
-        aiCommand: "-",
-        playerCommand: "-",
-        xWins: "-",
-        oWins: "-",
-        gamesList: "-"
-    
-      };
-    
-      componentDidMount() {
-        const fetchMe = async url => {
-          const response = await fetch(url);
-          const myJson = await response.json();
-          console.log(JSON.stringify(myJson));
-          let aiCommand = await JSON.stringify(myJson.result.ai);
-          let playerCommand = await JSON.stringify(myJson.result.player);
-          let xWins = await JSON.stringify(myJson.result.X);
-          let oWins = await JSON.stringify(myJson.result.O);
-          let gamesList = await JSON.stringify(myJson.result.list);
-          this.setState({ aiCommand, playerCommand, xWins, oWins, gamesList });
-        };
-        fetchMe("http://localhost:3001/api/game");
-      }
-    
-      render() {
-    
-        return (
-          <div>
-            <div>Current Game:</div>
-            <div>AI: {this.state.aiCommand}</div>
-            <div>Player: {this.state.playerCommand}</div>
-            <div>Match Log: {this.state.gamesList}</div>
-          </div>
-        );
-      }
-    }
-    
+import store from "../../index";
+import { renderCurrentGame } from "../../actions";
+
+class CurrentGame extends Component {
+  componentDidMount() {
+    const fetchMove = async url => {
+      const response = await fetch(url);
+      const myJson = await response.json();
+      const result = await myJson.result;
+      // console.log('Current game result: ', result)
+      store.dispatch(renderCurrentGame(result));
+      console.log("store", store.getState());
+    };
+    fetchMove("http://localhost:3001/api/game");
+  }
+
+  render() {
+    return (
+      <div>
+        <div>
+          <b>Current Game</b>
+        </div>
+        <div>AI command: {this.props.aiCommand}</div>
+        <div>Player command: {this.props.playerCommand}</div>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = ({ aiCommand, playerCommand, gamesList }) => {
+  return {
+    aiCommand,
+    playerCommand,
+    gamesList
+  };
+};
+
+export default connect(mapStateToProps)(CurrentGame);
