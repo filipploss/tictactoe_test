@@ -22,12 +22,16 @@ const add = ({winner, team}) => {
     Score[team]++;
 };
 const get = () => JSON.parse(JSON.stringify(Score));
+
+// Добавлен сброс кол-ва выигранных партий у X и O
 const reset = () => {
   logger.info('reset');
   Object.assign(Score, {
     ai: 0,
     player: 0,
     list: [],
+    X: 0,
+    O: 0,
   });
 }
 
