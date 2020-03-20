@@ -1,16 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import store from "../../index";
+import { dispatch } from "../../index";
 import { renderScoreStore } from "../../actions";
 
 export class Score extends Component {
   componentDidMount() {
     const fetchMove = async url => {
-      const response = await fetch(url);
-      const myJson = await response.json();
-      const result = await myJson.result;
-      store.dispatch(renderScoreStore(result));
+      try {
+        const response = await fetch(url);
+        const myJson = await response.json();
+        const result = await myJson.result;
+        dispatch(renderScoreStore(result));
+      } catch (err) {
+        alert(err);
+      }
     };
     fetchMove("http://localhost:3001/api/score");
   }

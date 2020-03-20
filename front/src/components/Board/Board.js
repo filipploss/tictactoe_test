@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Button from "muicss/lib/react/button";
 import Panel from "muicss/lib/react/panel";
 
-import store from "../../index";
+// import store from "../../index";
 import { dispatch } from "../../index";
 import "./Board.css";
 import Score from "../Score/Score";
@@ -18,47 +18,28 @@ import {
 } from "../../actions";
 
 class Board extends Component {
-  componentDidMount() {
-    this.fetchFunc("http://localhost:3001/api/game", "GET", renderBoardStore);
-    // const fetchMove = async url => {
-    //   const response = await fetch(url);
-    //   const myJson = await response.json();
-    //   // console.log("Match Started", JSON.stringify(myJson));
-    //   const result = await myJson.result;
-    //   // console.log('result Didmount', result)
-    //   dispatch(renderBoardStore(result));
-    //   // console.log("ComponentDidMount store", store.getState());
-    // };
-    // fetchMove("http://localhost:3001/api/game");
-  }
-
   fetchFunc = async (url, method, dispatchFunc, func) => {
-    const response = await fetch(url, {
-      method
-    });
-    const myJson = await response.json();
-    const result = await myJson.result;
-    console.log("result:", result);
-    console.log("Store before result", store.getState());
-    dispatch(dispatchFunc(result));
-    console.log("Store after result", store.getState());
-    if (func) {
-      func();
+    try {
+      const response = await fetch(url, {
+        method
+      });
+      const myJson = await response.json();
+      const result = await myJson.result;
+      dispatch(dispatchFunc(result));
+      if (func) {
+        func();
+      }
+    } catch (err) {
+      alert(err);
     }
   };
 
+  componentDidMount() {
+    this.fetchFunc("http://localhost:3001/api/game", "GET", renderBoardStore);
+  }
+
   scoreUpdate = () => {
     this.fetchFunc("http://localhost:3001/api/score", "GET", renderScoreStore);
-    // const fetchMove = async url => {
-    //   const response = await fetch(url);
-    //   const myJson = await response.json();
-    //   const result = await myJson.result;
-    //   // console.log(result);
-    //   // console.log("store before result", store.getState());
-    //   dispatch(renderScoreStore(result));
-    //   // console.log("store after result", store.getState());
-    // };
-    // fetchMove("http://localhost:3001/api/score");
   };
 
   matchRestart = () => {
@@ -68,19 +49,6 @@ class Board extends Component {
       matchRestartStore,
       this.scoreUpdate
     );
-    // const fetchMove = async url => {
-    //   const response = await fetch(url, {
-    //     method: "POST"
-    //   });
-    //   const myJson = await response.json();
-    //   const result = await myJson.result;
-    //   console.log("result:", result);
-    //   console.log("Store before result", store.getState());
-    //   dispatch(matchRestartStore(result));
-    //   console.log("Store after result", store.getState());
-    // };
-    // fetchMove("http://localhost:3001/api/game/reset");
-    // this.scoreUpdate();
   };
 
   nextMatch = () => {
@@ -90,17 +58,6 @@ class Board extends Component {
       nextMatchStore,
       this.scoreUpdate
     );
-    // const fetchMove = async url => {
-    //   const response = await fetch(url);
-    //   const myJson = await response.json();
-    //   const result = await myJson.result;
-    //   // console.log("Next Match", JSON.stringify(myJson));
-    //   // console.log('nextMatch fetch:', result);
-    //   dispatch(nextMatchStore(result));
-    //   // console.log("store", store.getState());
-    // };
-    // fetchMove("http://localhost:3001/api/game/next");
-    // this.scoreUpdate();
   };
 
   resetAllGames = () => {
@@ -110,18 +67,6 @@ class Board extends Component {
       resetAllGamesStore,
       this.nextMatch
     );
-    // const fetchMove = async url => {
-    //   const response = await fetch(url, {
-    //     method: "POST"
-    //   });
-    //   const myJson = await response.json();
-    //   const result = await myJson.result;
-    //   // console.log('Reset all games result: ', result)
-    //   dispatch(resetAllGamesStore(result));
-    //   // console.log("store", store.getState());
-    // };
-    // fetchMove("http://localhost:3001/api/score/reset");
-    // this.nextMatch();
   };
 
   makeMove = cell => {
@@ -129,20 +74,21 @@ class Board extends Component {
       index: cell
     };
     const fetchMove = async url => {
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      });
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
 
-      const myJson = await response.json();
-      const result = await myJson.result;
-      console.log("MOVE store before result", store.getState());
-      console.log("MOVE result=", result);
-      dispatch(moveStore(result));
-      console.log("MOVE store after result", store.getState());
+        const myJson = await response.json();
+        const result = await myJson.result;
+        dispatch(moveStore(result));
+      } catch (err) {
+        alert(err);
+      }
     };
     fetchMove("http://localhost:3001/api/game/move");
     this.scoreUpdate();
@@ -179,7 +125,6 @@ class Board extends Component {
         <Panel className="results">
           <div>
             <CurrentGame />
-            {/* {console.log('PROPS=', this.props)} */}
             {this.props.matchEnd && this.props.winner === "ai" ? (
               <div className="winner">AI Wins!</div>
             ) : this.props.matchEnd && this.props.winner === "player" ? (

@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import store from "../../index";
+import { dispatch } from "../../index";
 import { renderCurrentGame } from "../../actions";
 
 class CurrentGame extends Component {
   componentDidMount() {
     const fetchMove = async url => {
-      const response = await fetch(url);
-      const myJson = await response.json();
-      const result = await myJson.result;
-      // console.log('Current game result: ', result)
-      store.dispatch(renderCurrentGame(result));
-      console.log("store", store.getState());
+      try {
+        const response = await fetch(url);
+        const myJson = await response.json();
+        const result = await myJson.result;
+        dispatch(renderCurrentGame(result));
+      } catch (err) {
+        alert(err);
+      }
     };
     fetchMove("http://localhost:3001/api/game");
   }
