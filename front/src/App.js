@@ -1,11 +1,11 @@
 import React from "react";
 
-import Board from "./components/Board";
+import BoardContainer from "./components/Board/BoardContainer";
 
 function App() {
   return (
-    <div className="App">
-      <Board />
+    <div>
+      <BoardContainer />
     </div>
   );
 }

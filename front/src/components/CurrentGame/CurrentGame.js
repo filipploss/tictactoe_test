@@ -1,43 +1,15 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from "react";
 
-import { dispatch } from "../../index";
-import { renderCurrentGame } from "../../actions";
-
-class CurrentGame extends Component {
-  componentDidMount() {
-    const fetchMove = async url => {
-      try {
-        const response = await fetch(url);
-        const myJson = await response.json();
-        const result = await myJson.result;
-        dispatch(renderCurrentGame(result));
-      } catch (err) {
-        alert(err);
-      }
-    };
-    fetchMove("http://localhost:3001/api/game");
-  }
-
-  render() {
-    return (
+const CurrentGame = ({ aiCommand, playerCommand }) => {
+  return (
+    <div>
       <div>
-        <div>
-          <b>Current Game</b>
-        </div>
-        <div>AI command: {this.props.aiCommand}</div>
-        <div>Player command: {this.props.playerCommand}</div>
+        <b>Current Game</b>
       </div>
-    );
-  }
-}
-
-const mapStateToProps = ({ aiCommand, playerCommand, gamesList }) => {
-  return {
-    aiCommand,
-    playerCommand,
-    gamesList
-  };
+      <div>AI command: {aiCommand}</div>
+      <div>Player command: {playerCommand}</div>
+    </div>
+  );
 };
 
-export default connect(mapStateToProps)(CurrentGame);
+export default CurrentGame;
