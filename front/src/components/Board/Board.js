@@ -25,6 +25,7 @@ class Board extends Component {
       });
       const myJson = await response.json();
       const result = await myJson.result;
+      console.log(result)
       dispatch(dispatchFunc(result));
       if (func) {
         func();
@@ -137,7 +138,7 @@ class Board extends Component {
           </div>
           <Score />
         </Panel>
-        <div className="buttons">
+        <div className="buttons-container">
           <Button variant="raised" color="primary" onClick={this.matchRestart}>
             Restart Match
           </Button>

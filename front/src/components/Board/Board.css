@@ -11,7 +11,7 @@
 .container {
   display: flex;
   flex-wrap: wrap;
-  max-width: 306px;
+  width: 306px;
   margin: 1rem;
   border: 1px solid black;
 }
@@ -32,15 +32,27 @@
   background-color: beige;
 }
 
-.results {
-  width: 306px;
-  display: flex;
-  justify-content: space-between;
+.mui-btn {
+  width: 200px;
+  margin-right: 6px;
 }
 
-.buttons {
+.mui-btn+.mui-btn {
+  margin-left: 0px;
+}
+
+.results {
+  width: 275px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.buttons-container {
   min-width: 150px;
   margin: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .winner {
