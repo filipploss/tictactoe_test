@@ -1,6 +1,6 @@
 import React from "react";
 
-import BoardContainer from "./components/Board/BoardContainer";
+import BoardContainer from "./containers/BoardContainer";
 
 function App() {
   return (

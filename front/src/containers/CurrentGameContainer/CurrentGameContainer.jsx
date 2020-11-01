@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { dispatch } from "../../index";
 import { renderCurrentGame } from "../../actions";
-import CurrentGame from "./CurrentGame";
+import CurrentGame from "../../components/CurrentGame";
 
 const CurrentGameContainer = ({ ...props }) => {
   useEffect(() => {

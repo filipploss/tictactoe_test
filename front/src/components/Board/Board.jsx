@@ -4,8 +4,8 @@ import "./Board.css";
 import Button from "muicss/lib/react/button";
 import Panel from "muicss/lib/react/panel";
 
-import Score from "../Score/Score";
-import CurrentGame from "../CurrentGame";
+import ScoreContainer from "../../containers/ScoreContainer";
+import CurrentGameContainer from "../../containers/CurrentGameContainer";
 
 const Board = (props) => {
   return (
@@ -37,7 +37,7 @@ const Board = (props) => {
       </div>
       <Panel className="results">
         <div>
-          <CurrentGame />
+          <CurrentGameContainer />
           {props.matchEnd && props.winner === "ai" ? (
             <div className="winner">AI Wins!</div>
           ) : props.matchEnd && props.winner === "player" ? (
@@ -48,7 +48,7 @@ const Board = (props) => {
             ""
           )}
         </div>
-        <Score />
+        <ScoreContainer />
       </Panel>
       <div className="buttons-container">
         <Button variant="raised" color="primary" onClick={props.matchRestart}>

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
-import Board from "./Board";
+import Board from "../../components/Board";
 import { dispatch } from "../../index";
 import {
   moveStore,
@@ -20,7 +20,6 @@ const BoardContainer = ({ ...props }) => {
       });
       const myJson = await response.json();
       const result = await myJson.result;
-      console.log(result);
       dispatch(dispatchFunc(result));
       if (func) {
         func();

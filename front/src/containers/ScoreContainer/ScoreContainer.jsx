@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import { dispatch } from "../../index";
 import { renderScoreStore } from "../../actions";
-import Score from "./Score";
+import Score from "../../components/Score";
 
 const ScoreContainer = ({ ...props }) => {
   useEffect(() => {
