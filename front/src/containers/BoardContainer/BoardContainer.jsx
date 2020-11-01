@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import Board from "../../components/Board";
+// TODO: DISPATCH REMOVE
 import { dispatch } from "../../index";
 import {
   moveStore,
@@ -9,7 +10,8 @@ import {
   matchRestartStore,
   resetAllGamesStore,
   nextMatchStore,
-  renderScoreStore,
+  renderScore,
+  updateScoreRequest
 } from "../../actions";
 
 const BoardContainer = ({ ...props }) => {
@@ -34,7 +36,7 @@ const BoardContainer = ({ ...props }) => {
   }, []);
 
   const scoreUpdate = () => {
-    fetchFunc("http://localhost:3001/api/score", "GET", renderScoreStore);
+    dispatch(updateScoreRequest())
   };
 
   const matchRestart = () => {
@@ -68,24 +70,7 @@ const BoardContainer = ({ ...props }) => {
     const data = {
       index: cell,
     };
-    const fetchMove = async (url) => {
-      try {
-        const response = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
-        const myJson = await response.json();
-        const result = await myJson.result;
-        dispatch(moveStore(result));
-      } catch (err) {
-        alert(err);
-      }
-    };
-    fetchMove("http://localhost:3001/api/game/move");
+    dispatch(moveStore(data));
     scoreUpdate();
   };
 

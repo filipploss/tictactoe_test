@@ -8,19 +8,39 @@ const initialState = {
   aiWins: "",
   playerWins: "",
   xWins: "",
-  oWins: ""
+  oWins: "",
+  moveRequestPending: false,
+  renderScorePending: false,
+  error: null
 };
 
 const reducer = (state = initialState, action) => {
+  console.log(action)
   switch (action.type) {
-    case "MAKE_MOVE":
+    case "MAKE_MOVE_REQUESTED":
+      return {
+        ...state,
+        moveRequestPending: true
+      };
+
+    case "MAKE_MOVE_SUCCESS":
       return {
         ...state,
         board: action.payload.board,
         matchEnd: action.payload.end,
-        winner: action.payload.winner
+        winner: action.payload.winner,
+        moveRequestPending: false
       };
 
+      case "MAKE_MOVE_FAIL":
+      return {
+        ...state,
+        moveRequestPending: false,
+        error: action.payload
+      };
+
+
+      // TODO: ERROR: NULL
     case "RENDER_STORE":
       return {
         ...state,
@@ -54,14 +74,36 @@ const reducer = (state = initialState, action) => {
         winner: null
       };
 
-    case "RENDER_SCORE_STORE":
+      case "RENDER_SCORE_REQUEST":
+        return {
+          ...state,
+        renderScorePending: true
+        };
+
+    case "RENDER_SCORE_SUCCESS":
       return {
         ...state,
         aiWins: action.payload.ai,
         playerWins: action.payload.player,
         xWins: action.payload.X,
         oWins: action.payload.O,
-        gamesList: action.payload.list
+        gamesList: action.payload.list,
+        renderScorePending: false
+      };
+
+      case "RENDER_SCORE_FAIL":
+      return {
+        ...state,
+        renderScorePending: false,
+        error: action.payload
+      };
+      
+
+    case "RENDER_CURRENT_GAME_STORE":
+      return {
+        ...state,
+        aiCommand: action.payload.ai,
+        playerCommand: action.payload.player
       };
 
     case "RENDER_CURRENT_GAME_STORE":
@@ -69,6 +111,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         aiCommand: action.payload.ai,
         playerCommand: action.payload.player
+      };
+
+      case "UPDATE_SCORE_REQUEST":
+      return {
+        ...state,
       };
     default:
       return state;

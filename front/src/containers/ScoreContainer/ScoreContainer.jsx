@@ -1,24 +1,14 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import { dispatch } from "../../index";
-import { renderScoreStore } from "../../actions";
+import * as actions from "../../actions";
 import Score from "../../components/Score";
 
-const ScoreContainer = ({ ...props }) => {
+const ScoreContainer = ({ renderScore, ...props }) => {
   useEffect(() => {
-    const fetchMove = async (url) => {
-      try {
-        const response = await fetch(url);
-        const myJson = await response.json();
-        const result = await myJson.result;
-        dispatch(renderScoreStore(result));
-      } catch (err) {
-        alert(err);
-      }
-    };
-    fetchMove("http://localhost:3001/api/score");
-  }, []);
+    renderScore();
+  }, [renderScore]);
 
   return <Score {...props} />;
 };
@@ -32,4 +22,11 @@ const mapStateToProps = ({ aiWins, playerWins, xWins, oWins }) => {
   };
 };
 
-export default connect(mapStateToProps)(ScoreContainer);
+const mapDispatchToProps = (dispatch) => {
+  const { renderScore } = bindActionCreators(actions, dispatch);
+  return {
+    renderScore,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScoreContainer);
