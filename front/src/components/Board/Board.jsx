@@ -7,11 +7,19 @@ import Panel from "muicss/lib/react/panel";
 import ScoreContainer from "../../containers/ScoreContainer";
 import CurrentGameContainer from "../../containers/CurrentGameContainer";
 
-const Board = (props) => {
+const Board = ({
+  board,
+  makeMove,
+  matchEnd,
+  winner,
+  matchRestart,
+  nextMatch,
+  resetAllGames,
+}) => {
   return (
     <div className="main-container">
       <div className="container ">
-        {props.board.map((item, i) =>
+        {board.map((item, i) =>
           item.map((item, index) => {
             return (
               <div
@@ -24,8 +32,8 @@ const Board = (props) => {
                     : index
                 }
                 onClick={() => {
-                  if (typeof item === "number" && !props.matchEnd) {
-                    props.makeMove(index + 1);
+                  if (typeof item === "number" && !matchEnd) {
+                    makeMove(index + 1);
                   }
                 }}
               >
@@ -38,11 +46,11 @@ const Board = (props) => {
       <Panel className="results">
         <div>
           <CurrentGameContainer />
-          {props.matchEnd && props.winner === "ai" ? (
+          {matchEnd && winner === "ai" ? (
             <div className="winner">AI Wins!</div>
-          ) : props.matchEnd && props.winner === "player" ? (
+          ) : matchEnd && winner === "player" ? (
             <div className="winner">Player Wins!</div>
-          ) : props.matchEnd && !props.winner ? (
+          ) : matchEnd && !winner ? (
             <div className="winner">DRAW!</div>
           ) : (
             ""
@@ -51,13 +59,13 @@ const Board = (props) => {
         <ScoreContainer />
       </Panel>
       <div className="buttons-container">
-        <Button variant="raised" color="primary" onClick={props.matchRestart}>
+        <Button variant="raised" color="primary" onClick={matchRestart}>
           Restart Match
         </Button>
-        <Button variant="raised" color="primary" onClick={props.nextMatch}>
+        <Button variant="raised" color="primary" onClick={nextMatch}>
           Next Match
         </Button>
-        <Button variant="raised" color="primary" onClick={props.resetAllGames}>
+        <Button variant="raised" color="primary" onClick={resetAllGames}>
           Reset All Games
         </Button>
       </div>

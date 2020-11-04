@@ -5,10 +5,10 @@ import { bindActionCreators } from "redux";
 import * as actions from "../../actions";
 import Score from "../../components/Score";
 
-const ScoreContainer = ({ renderScore, ...props }) => {
+const ScoreContainer = ({ renderScoreRequest, ...props }, ) => {
   useEffect(() => {
-    renderScore();
-  }, [renderScore]);
+    renderScoreRequest();
+  });
 
   return <Score {...props} />;
 };
@@ -23,9 +23,9 @@ const mapStateToProps = ({ aiWins, playerWins, xWins, oWins }) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  const { renderScore } = bindActionCreators(actions, dispatch);
+  const { renderScoreRequest } = bindActionCreators(actions, dispatch);
   return {
-    renderScore,
+    renderScoreRequest,
   };
 };
 

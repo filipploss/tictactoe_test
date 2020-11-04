@@ -11,16 +11,19 @@ const initialState = {
   oWins: "",
   moveRequestPending: false,
   renderScorePending: false,
-  error: null
+  restartMatchPending: false,
+  updateScorePending: false,
+  nextMatchPending: false,
+  resetAllGamesPending: false,
+  error: null,
 };
 
 const reducer = (state = initialState, action) => {
-  console.log(action)
   switch (action.type) {
-    case "MAKE_MOVE_REQUESTED":
+    case "MAKE_MOVE_REQUEST":
       return {
         ...state,
-        moveRequestPending: true
+        moveRequestPending: true,
       };
 
     case "MAKE_MOVE_SUCCESS":
@@ -29,56 +32,75 @@ const reducer = (state = initialState, action) => {
         board: action.payload.board,
         matchEnd: action.payload.end,
         winner: action.payload.winner,
-        moveRequestPending: false
-      };
-
-      case "MAKE_MOVE_FAIL":
-      return {
-        ...state,
         moveRequestPending: false,
-        error: action.payload
       };
 
-
-      // TODO: ERROR: NULL
-    case "RENDER_STORE":
+    case "RENDER_BOARD_REQUEST":
+      return {
+        ...state,
+        renderBoardPending: true,
+      };
+      
+    case "RENDER_BOARD_SUCCESS":
       return {
         ...state,
         playerCommand: action.payload.player,
         aiCommand: action.payload.ai,
         board: action.payload.board,
-        matchEnd: action.payload.end
+        matchEnd: action.payload.end,
+        renderBoardPending: false,
       };
 
-    case "RESTART_MATCH":
+    case "RESTART_MATCH_REQUEST":
+      return {
+        ...state,
+        restartMatchPending: true,
+      };
+
+    case "RESTART_MATCH_SUCCESS":
       return {
         ...state,
         board: action.payload.board,
         matchEnd: null,
-        winner: null
+        winner: null,
+        restartMatchPending: false,
       };
 
-    case "NEXT_MATCH_STORE":
+    case "NEXT_MATCH_REQUEST":
+      return {
+        ...state,
+        nextMatchPending: true,
+      };
+
+    case "NEXT_MATCH_SUCCESS":
       return {
         ...state,
         playerCommand: action.payload.player,
         aiCommand: action.payload.ai,
         board: action.payload.board,
         matchEnd: null,
-        winner: null
+        winner: null,
+        nextMatchPending: false,
       };
 
-    case "RESET_ALL_GAMES":
+    case "RESET_ALL_GAMES_REQUEST":
       return {
         ...state,
-        winner: null
+        resetAllGamesPending: true,
       };
 
-      case "RENDER_SCORE_REQUEST":
-        return {
-          ...state,
-        renderScorePending: true
-        };
+    case "RESET_ALL_GAMES_SUCCESS":
+      return {
+        ...state,
+        winner: null,
+        resetAllGamesPending: false,
+      };
+
+    case "RENDER_SCORE_REQUEST":
+      return {
+        ...state,
+        renderScorePending: true,
+      };
 
     case "RENDER_SCORE_SUCCESS":
       return {
@@ -88,35 +110,31 @@ const reducer = (state = initialState, action) => {
         xWins: action.payload.X,
         oWins: action.payload.O,
         gamesList: action.payload.list,
-        renderScorePending: false
-      };
-
-      case "RENDER_SCORE_FAIL":
-      return {
-        ...state,
         renderScorePending: false,
-        error: action.payload
-      };
-      
-
-    case "RENDER_CURRENT_GAME_STORE":
-      return {
-        ...state,
-        aiCommand: action.payload.ai,
-        playerCommand: action.payload.player
       };
 
-    case "RENDER_CURRENT_GAME_STORE":
+    case "UPDATE_SCORE_REQUEST":
       return {
         ...state,
-        aiCommand: action.payload.ai,
-        playerCommand: action.payload.player
+        updateScoreRequestPending: true,
+      };
+    case "UPDATE_SCORE_SUCCESS":
+      return {
+        ...state,
+        aiWins: action.payload.ai,
+        playerWins: action.payload.player,
+        xWins: action.payload.X,
+        oWins: action.payload.O,
+        gamesList: action.payload.list,
+        updateScoreRequestPending: false,
       };
 
-      case "UPDATE_SCORE_REQUEST":
+    case "FETCH_FAIL":
       return {
         ...state,
+        error: action.payload,
       };
+
     default:
       return state;
   }

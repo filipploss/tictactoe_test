@@ -1,91 +1,98 @@
-import { call, put, takeEvery, all } from "redux-saga/effects";
+import { put, takeEvery, all } from "redux-saga/effects";
 
 import {
-  moveStore,
-  moveStoreSuccess,
-  moveStoreFail,
-  renderBoardStore,
-  renderScore,
-  renderScoreFail,
+  fetchFail,
+  makeMoveSuccess,
+  matchRestartSuccess,
+  nextMatchSuccess,
+  renderBoardSuccess,
   renderScoreSuccess,
-  renderCurrentGame,
-  renderCurrentGameSuccess,
-  renderCurrentGameFail,
+  resetAllGamesSuccess,
+  updateScoreSuccess,
 } from "./actions";
-import { dispatch } from "./index";
 
-function* fetchFunc (url, method, dispatchFunc, callback) {
-    console.log('fetchFunc', url, method, dispatchFunc, callback)
-    try {
-      const response = yield fetch(url, {
-        method,
-      });
-      const myJson = yield response.json();
-      const result = yield myJson.result;
-      yield put(dispatchFunc(result));
-      if (callback) {
-        yield callback();
-      }
-    } catch (err) {
-      alert(err);
+function* fetchFunc(url, method, dispatchFunc, callback, action) {
+  try {
+    const response = action
+      ? yield fetch(url, {
+          method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(action.payload),
+        })
+      : yield fetch(url, {
+          method,
+        });
+    const myJson = yield response.json();
+    const result = yield myJson.result;
+    yield put(dispatchFunc(result));
+    if (callback) {
+      yield callback();
     }
-  };
+  } catch (err) {
+    yield put(fetchFail(err));
+    alert(err);
+  }
+}
 
-  // TODO: КАК обрабатывать ошибки?
-  function* scoreUpdate() {
-    yield fetchFunc("http://localhost:3001/api/score", "GET", renderScoreSuccess);
-  };
-
-  
+function* renderBoard() {
+  yield fetchFunc("http://localhost:3001/api/game", "GET", renderBoardSuccess);
+}
 
 function* makeMove(action) {
-  try {
-    const response = yield fetch("http://localhost:3001/api/game/move", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(action.payload),
-    });
-
-    const myJson = yield response.json();
-    const result = yield myJson.result;
-    yield put(moveStoreSuccess(result));
-  } catch (e) {
-    yield put(moveStoreFail({ message: e.message }));
-    alert(e);
-  }
+  yield fetchFunc(
+    "http://localhost:3001/api/game/move",
+    "POST",
+    makeMoveSuccess,
+    null,
+    action
+  );
 }
 
-function* fetchCurrentGame() {
-  try {
-    const response = yield fetch("http://localhost:3001/api/game");
-    const myJson = yield response.json();
-    const result = yield myJson.result;
-    put(renderCurrentGameSuccess(result));
-  } catch (e) {
-    put(renderCurrentGameFail({ message: e.message }));
-    alert(e);
-  }
+function* scoreUpdate() {
+  yield fetchFunc("http://localhost:3001/api/score", "GET", updateScoreSuccess);
 }
 
-function* fetchScore() {
-  try {
-    const response = yield fetch("http://localhost:3001/api/score");
-    const myJson = yield response.json();
-    const result = yield myJson.result;
-    yield put(renderScoreSuccess(result));
-  } catch (e) {
-    yield put(renderScoreFail({ message: e.message }));
-    alert(e);
-  }
+function* matchRestart() {
+  yield fetchFunc(
+    "http://localhost:3001/api/game/reset",
+    "POST",
+    matchRestartSuccess,
+    scoreUpdate
+  );
+}
+
+function* nextMatch() {
+  yield fetchFunc(
+    "http://localhost:3001/api/game/next",
+    "GET",
+    nextMatchSuccess,
+    scoreUpdate
+  );
+}
+
+function* resetAllGames() {
+  yield fetchFunc(
+    "http://localhost:3001/api/score/reset",
+    "POST",
+    resetAllGamesSuccess,
+    nextMatch
+  );
+}
+
+function* renderScore() {
+  yield fetchFunc("http://localhost:3001/api/score", "GET", renderScoreSuccess);
 }
 
 function* watch() {
   yield takeEvery("MAKE_MOVE_REQUEST", makeMove);
-  yield takeEvery("RENDER_SCORE_REQUEST", fetchScore);
-  yield takeEvery("RENDER_CURRENT_GAME_REQUEST", fetchCurrentGame);
+  yield takeEvery("RENDER_SCORE_REQUEST", renderScore);
   yield takeEvery("UPDATE_SCORE_REQUEST", scoreUpdate);
+  yield takeEvery("RESTART_MATCH_REQUEST", matchRestart);
+  yield takeEvery("NEXT_MATCH_REQUEST", nextMatch);
+  yield takeEvery("RESET_ALL_GAMES_REQUEST", resetAllGames);
+  yield takeEvery("RENDER_BOARD_REQUEST", renderBoard);
 }
 
 export default function* rootSaga() {
