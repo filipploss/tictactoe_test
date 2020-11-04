@@ -8,5 +8,6 @@ Clone this repo, run it with 'npm start' and open http://localhost:3000 to play.
 Libraries used for front-end:
 - React
 - Redux
+- Redux-Saga
 - MUI
 
